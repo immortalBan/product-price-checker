@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="h6">
+        <a href="javascript:history.back()" class="text-decoration-none text-reset">-Назад</a>
+    </div>
+    <div class="mb-4 mt-4">
+        <h1>{{ body }}</h1>
+    </div>
+    <div class="container py-1">
+        <div class="row">
+            <div class="col-4 offset-1">
+                <img src="{{ picture_url }}" style="width: 100%;">
+            </div>
+            <div class="col-4 offset-1">
+                <h4>Цены в магазинах:</h4>
+                <div class="container py-4">
+                    {% for shop in object_list %}
+                    <div class="row m-1">
+                        <div class="alert alert-info" style="background-color: rgb(255, 255, 255);
+                                                        border-radius: 8px;
+                                                        border-color: rgba(13,110,253, 0.3);
+                                                        border-style: solid;
+                                                        box-shadow: rgba(13,110,253, 0.07) 0px 6px 30px;
+                                                        color: rgb(0, 0, 0);">
+                            <div class="container py-1">
+                                <div class="row">
+                                    <h5 style="padding: 0px;">{{ shop.title }}</h5>
+                                </div>
+                                <div class="row">
+                                    <div style="color: #0d3861;
+                                            font-size: 14px;
+                                            font-weight: bold;">
+                                        <span style="color: #494f54;
+                                                font-size: 12px;
+                                                font-weight: 600;">от</span>
+                                        {{ shop.price }} ₽
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col m-5">
+                <div class="row">
+                    <h4>Описание</h4>
+                </div>
+                <div class="row">
+                    {{ description }}
+                </div>
+            </div>
+            <div class="col m-5">
+                <div class="row">
+                    <h5>Состав</h5>
+                </div>
+                <div class="row">
+                    {{ structure }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

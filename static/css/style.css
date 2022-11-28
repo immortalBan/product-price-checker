@@ -1,0 +1,6 @@
+.background-text {
+    background-image: url(../img/background.jpg), linear-gradient(to right, rgb(251,252,255), rgb(207,233,254));
+    background-size: cover;
+    background-position:
+  center center;
+}

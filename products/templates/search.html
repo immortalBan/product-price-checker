@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div style="display: flex;
+flex-direction: column; margin-inline: auto; width: min(100% - 1rem, 1500px); top: 50%;left: 50%; text-align: center;">
+    <div class="m-5">
+        <h1>Результат поиска: {{ body }}</h1>
+    </div>
+
+    <div style="margin-inline: auto; text-align: center;">
+        <div style="box-sizing: border-box;
+                    display: flex;
+                    flex: 0 1 auto;
+                    flex-direction: row;
+                    flex-wrap: wrap;">
+            {% for product in object_list %}
+            <div style="flex-basis: 50%;
+        max-width: 100%;
+        width: 300px;
+        height: 350px;
+        display: block;
+        box-sizing: border-box;
+        border-color: rgb(44, 27, 173);
+        flex: 0 0 auto;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;">
+                <div style="margin-bottom: 16px;">
+                    <div style="background-color: rgb(255, 255, 255);
+                border-radius: 8px;
+                border-color: rgba(13,110,253, 0.3);
+                border-style: solid;
+                box-shadow: rgba(13,110,253, 0.07) 0px 6px 30px;
+                color: rgb(0, 0, 0);
+                min-width: 110px;
+                padding: 8px 0px 12px;
+                position: relative;
+                transition: opacity 0.3s ease 0s;
+                width: 100%;
+                min-height: 300px;">
+                        <a href="/product?product={{ product.title }}&query={{ body }}" style="inset: 0px;
+                                                                        position: absolute;
+                                                                        z-index: 1;"></a>
+                        <div style="-webkit-box-align: center;
+                        align-items: center;
+                        display: flex;
+                        left: 0px;
+                        position: absolute;
+                        padding: 8px 8px 0px;
+                        right: 0px;
+                        top: 0px;">
+                            <div style="-webkit-box-align: center;
+                            align-items: center;
+                            display: flex;
+                            -webkit-box-flex: 1;
+                            flex-grow: 1;
+                            flex-wrap: wrap;
+                            margin: -4px;
+                            overflow: hidden;">
+                            </div>
+                        </div>
+                        <div style="height: 105px;
+                        -webkit-box-align: center;
+                        align-items: center;
+                        display: flex;
+                        margin: 36px 6px 0px;
+                        -webkit-box-pack: center;
+                        justify-content: center;
+                        padding: 0px 4px;
+                        position: relative;">
+                            <img src="{{ product.picture_url }}" style="height: 100%;
+                                                                        object-fit: contain;
+                                                                        width: 100%;">
+                        </div>
+                        <div style="padding: 0px 12px;">
+                            <div style="margin-top: 3rem;
+                                        position: relative;
+                                        height: 48px;">
+                                {{product.title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

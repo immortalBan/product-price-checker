@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block active-nav-link-home %}active{% endblock %}
+
+{% block content %}
+<div class="background-text">
+    <div style="text-align: center; padding-top: 70px; padding-bottom: 100px">
+        <div class="fs-1" style="color: rgb(13,110,253); font-weight: bold; font-family: 'Russo One', sans-serif">
+            Главная
+            страница
+        </div>
+        <div class="container"
+            style="width: 100%; margin-top: 300px; padding-top: 50px; padding-bottom: 10px; text-align: left;background-color: white; border-radius: 15px; box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 30px;">
+            <div class="h3" style="text-align: center; ">Проверка цен на продуктовые товары</div>
+            <div>
+                <h5 style="margin-top: 30px; margin-bottom: 50px; text-align: center;">Вы хотите знать, какая лучшая
+                    цена на определенный
+                    продукт?
+                    Будь то напиток,
+                    фрукт или готовый завтрак, этот
+                    сайт подскажет, где это найти и сколько это стоит.</h5>
+
+                <div class="container"
+                    style="border: 2px solid rgba(13, 109, 253, 0.075); border-radius: 8px; margin-bottom: 20px; box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 30px;">
+                    <h6>Вы найдете всю необходимую информацию</h6>
+                    <div class="container">
+                        На этом веб-сайте представлены исчерпывающие описания и цены всех присутсвующих товаров, так что
+                        вы можете быть уверены, что получите лучшее предложение. Он также имеет живой поиск продуктов,
+                        который
+                        позволяет вам быстро найти нужные товары.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
