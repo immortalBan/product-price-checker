@@ -4,14 +4,16 @@ from bs4 import BeautifulSoup
 
 r = requests.get('https://www.perekrestok.ru/',
                  headers={"User-Agent": "Requests"})
-access_token = re.search(r'accessToken":"([^"]+)', r.text).group(1)
+access_token = re.findall(
+    r'accessToken%22%3A%22([^%]+)', r.__dict__['headers']['Set-Cookie'])[0]
 
 
 class Product:
-    def __init__(self, title=None, price=None, picture_url=None):
+    def __init__(self, title=None, price=None, picture_url=None, json=None):
         self.__title = title
         self.__price = str(price / 100)
         self.__picture_url = picture_url.replace('%s', '400x400-fit')
+        self.__json = json
 
     @property
     def title(self):
@@ -24,6 +26,10 @@ class Product:
     @property
     def picture_url(self):
         return self.__picture_url
+
+    @property
+    def json(self):
+        return self.__json
 
 
 class Shop:
@@ -53,7 +59,7 @@ def parse_request(query):
         title = p['title']
         price = p['priceTag']['price']
         picture_url = p['image']['cropUrlTemplate']
-        obj_list.append(Product(title, price, picture_url))
+        obj_list.append(Product(title, price, picture_url, p))
 
     return obj_list
 
@@ -80,7 +86,7 @@ def parse_product(product, query):
     text = BeautifulSoup(r.text, 'lxml')
     products = text.find_all(
         class_=re.compile('catalog-item ddl_product'))
-    if len(products) > 0:
+    if len(products) == 0:
         url = f'https://sbermegamarket.ru/catalog/?q={product[:round(len(product)/1.5)]}'
 
         r = requests.get(url)
@@ -110,9 +116,14 @@ def parse_product(product, query):
 
 
 def parse_structure(product, query):
+    token = f'Bearer {access_token}'
+    headers_mobile = {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B137 Safari/601.1',
+        'Authorization': token}
+
     url = f'https://www.perekrestok.ru/api/customer/1.4.1.0/catalog/search/all?textQuery={query}&entityTypes[]=product&entityTypes[]=category'
     response = requests.get(
-        url, headers={'Authorization': f'Bearer {access_token}'})
+        url, headers=headers_mobile)
 
     products = response.json()['content']['products']
     for p in products:
@@ -122,20 +133,21 @@ def parse_structure(product, query):
     slug = p['masterData']['slug']
     slug += '-' + p['masterData']['plu']
     product_url = f"https://www.perekrestok.ru/cat/{category_id}/p/{slug}"
-    product_r = response = requests.get(
+    print(product_url)
+    product_r = requests.get(
         product_url, headers={'Authorization': f'Bearer {access_token}'})
     data = BeautifulSoup(product_r.text, 'lxml')
     description = data.find(
-        'pre', class_='product-composition-display-value')
+        'pre', class_='product-features-tab-description')
     if not description:
         description = 'Отсутсвует'
     else:
         description = description.text
-    structure = data.find('div', class_='sc-dlfnbm gfYllG')
+    structure = data.find('div', class_='Box-sc-149qidf-0 dQjiIz')
     if not structure:
         structure = 'Отсутсвует'
     else:
-        structure = structure.text
+        structure = structure.find('div').text
     return description, structure
 
 
